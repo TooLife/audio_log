@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jtcoding.audiolog.dao.PlanDao">
+
+
+    <insert id="addPlan">
+        INSERT INTO plan (plan_name) VALUES (#{planName})
+    </insert>
+
+    <update id="updatePlan">
+        UPDATE plan SET plan_name = #{planName} WHERE plan_num = #{planNum}
+    </update>
+
+    <delete id="deletePlan">
+        DELETE FROM plan WHERE plan_num = #{planNum}
+    </delete>
+
+    <select id="getPlanByNum" resultType="com.jtcoding.audiolog.model.Plan">
+        SELECT * FROM plan WHERE plan_num = #{planNum}
+    </select>
+</mapper>

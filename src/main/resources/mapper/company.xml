@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jtcoding.audiolog.dao.CompanyDao">
+
+    <resultMap id="companyMapping" type="com.jtcoding.audiolog.model.Company">
+        <id column="comp_num" property="companyNum" javaType="Integer"/>
+        <result column="comp_name" property="companyName" javaType="String"/>
+        <result column="comp_addr" property="companyAddress" javaType="String"/>
+    </resultMap>
+
+    <insert id="addCompany">
+        INSERT INTO company (
+          comp_name, comp_addr
+        ) VALUES (
+          #{companyName}, #{companyAddress}
+        )
+    </insert>
+
+    <update id="updateCompany">
+        UPDATE company
+          SET comp_name = #{companyName}, comp_addr = #{companyAddress}
+        WHERE comp_num = #{companyNum}
+    </update>
+
+    <delete id="deleteCompany">
+        DELETE FROM company
+          WHERE comp_num = #{companyNum}
+    </delete>
+
+    <select id="getCompanyByNum" resultMap="companyMapping">
+        SELECT * FROM company
+          WHERE comp_num = #{companyNum}
+    </select>
+</mapper>
