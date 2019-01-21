@@ -12,7 +12,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
-public class Plan {
+public class Plan  {
     private Integer planNum;
     private String planName;
 }

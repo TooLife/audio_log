@@ -22,6 +22,5 @@ public interface PlanDao {
     @AudioAction(action = Action.DELETE)
     int deletePlan(int planNum);
 
-    @AudioAction(action = Action.GET)
     Plan getPlanByNum(int planNum);
 }

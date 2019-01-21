@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jtcoding.audiolog.dao.PlanDao">
 
+    <resultMap id="planMapping" type="com.jtcoding.audiolog.model.Plan">
+        <id column="plan_num" property="planNum" javaType="Integer"/>
+        <id column="plan_name" property="planName" javaType="String"/>
+    </resultMap>
 
     <insert id="addPlan">
         INSERT INTO plan (plan_name) VALUES (#{planName})
@@ -12,10 +16,11 @@
     </update>
 
     <delete id="deletePlan">
-        DELETE FROM plan WHERE plan_num = #{planNum}
+        DELETE FROM plan
+        WHERE plan_num = #{planNum}
     </delete>
 
-    <select id="getPlanByNum" resultType="com.jtcoding.audiolog.model.Plan">
+    <select id="getPlanByNum" resultMap="planMapping">
         SELECT * FROM plan WHERE plan_num = #{planNum}
     </select>
 </mapper>

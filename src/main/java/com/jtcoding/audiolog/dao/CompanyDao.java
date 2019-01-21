@@ -5,19 +5,17 @@ import com.jtcoding.audiolog.annotation.AudioAction;
 import com.jtcoding.audiolog.enums.Action;
 import com.jtcoding.audiolog.model.Company;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author jason.tang
  * @create 2019-01-16 10:24
  * @description
  */
+
 @Mapper
 public interface CompanyDao {
 
-    @AudioAction(action = Action.GET)
-    Company getCompanyByNum(@Param("companyNum") int companyNum);
+    Company getCompanyByNum(int companyNum);
 
     @AudioAction(action = Action.ADD)
     int addCompany(Company company);
