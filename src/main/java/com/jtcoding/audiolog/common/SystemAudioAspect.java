@@ -43,7 +43,7 @@ public class SystemAudioAspect {
     @Autowired
     private AudioLogDao audioLogDao;
 
-    @Pointcut(value = "execution(public * com.jtcoding.audiolog.dao..*.*(..))")
+    @Pointcut(value = "execution(public * com.jtcoding.audiolog.dao..*.add*(..)) || execution(public * com.jtcoding.audiolog.dao..*.update*(..)) || execution(public * com.jtcoding.audiolog.dao..*.delete*(..))")
     public void audio() {
     }
 
