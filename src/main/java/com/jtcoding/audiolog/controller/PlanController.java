@@ -1,5 +1,6 @@
 package com.jtcoding.audiolog.controller;
 
+import com.jtcoding.audiolog.model.Plan;
 import com.jtcoding.audiolog.service.PlanService;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class PlanController {
 
     @Autowired
     private PlanService planService;
+
+    @RequestMapping(value = "/{planNum}", method = RequestMethod.GET)
+    public Plan getPlanByNum(@PathVariable int planNum) {
+        return planService.getPlanByNum(planNum);
+    }
 
     @RequestMapping(value = "/{planNum}", method = RequestMethod.DELETE)
     public int deletePlanByNum(@PathVariable int planNum) {

@@ -35,88 +35,88 @@ import java.util.Objects;
 @Component
 public class AudioLogAspect {
 
-    @Lazy
-    @Autowired
-    private CompanyService companyService;
-
-    @Autowired
-    private PlanService planService;
-
-    @Lazy
-    @Autowired
-    private AudioLogDao audioLogDao;
-
-	@Pointcut("execution(public * com.jtcoding.audiolog.controller..*.get*(..))  || execution(public * com.jtcoding.audiolog.service..*.get*(..))") // 所有子目和所有参数
-	public void log() {
-	}
-
-	@Pointcut("execution(public * com.jtcoding.audiolog.dao..*.delete*(..))")
-	public void deleteLog() {
-
-	}
-
-	@Before("deleteLog()")
-	public void doBefore(JoinPoint joinPoint) throws Exception {
-        String methodName = joinPoint.getSignature().getName();
-        log.info(methodName);
-        Class declaringType = joinPoint.getSignature().getDeclaringType();
-
-        Object[] args = joinPoint.getArgs();
-        Method[] methods = declaringType.getMethods();
-        Method method = Arrays.stream(methods)
-                .filter(m -> Objects.equals(m.getName(), methodName))
-                .filter(m -> Objects.equals(m.getParameterTypes().length, args.length))
-                .findFirst()
-                .orElse(null);
-        if (method != null) {
-            Object obj = null;
-            switch (declaringType.getSimpleName()) {
-                case "CompanyDao":
-                    int companyNum = (int) args[0];
-                    obj = companyService.getCompanyByNum(companyNum);
-                    break;
-                case "PlanDao":
-                    int planNum = (int) args[0];
-                    obj = planService.getPlanByNum(planNum);
-                    break;
-            }
-            if (obj != null) {
-                this.addAudioLog(obj);
-            }
-        }
-	}
-
-	private void addAudioLog(Object obj) {
-        String jsonString = JacksonSerializer.toJSONString(obj);
-        AudioLog audioLog = AudioLog.builder().logData(jsonString).createDatetime(LocalDate.now()).build();
-        audioLogDao.addAudioLog(audioLog);
-    }
-
-	@AfterReturning(returning = "result", pointcut = "log()")
-	public void doAfterReturning(Object result) throws Exception {
-		System.out.println("after returning");
-	}
-
-	@Around("log()")
-	public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		long startTime = System.currentTimeMillis();
-		Object result = null;
-		try {
-			result = joinPoint.proceed();
-			long endTime = System.currentTimeMillis();
-			String tragetClassName = joinPoint.getSignature().getDeclaringTypeName();
-			String methodName = joinPoint.getSignature().getName();
-			log.info("CLASS_METHOD [{}.{}] cost : {} ms.", tragetClassName, methodName, endTime - startTime);
-		} catch (Throwable e) {
-			long endTime = System.currentTimeMillis();
-			log.info("{} Use time : {} ms with exception : ", joinPoint, endTime - startTime, e.getMessage());
-			throw e;
-		}
-		return result;
-	}
-
-	@AfterThrowing(throwing = "ex", pointcut = "execution(public * com.jtcoding.audiolog.controller..*.*(..))")
-	public void doAfterThrowing(Exception ex) {
-		log.error("[EXCEPTION] : {}", ex);
-	}
+//    @Lazy
+//    @Autowired
+//    private CompanyService companyService;
+//
+//    @Autowired
+//    private PlanService planService;
+//
+//    @Lazy
+//    @Autowired
+//    private AudioLogDao audioLogDao;
+//
+//	@Pointcut("execution(public * com.jtcoding.audiolog.controller..*.get*(..))  || execution(public * com.jtcoding.audiolog.service..*.get*(..))") // 所有子目和所有参数
+//	public void log() {
+//	}
+//
+//	@Pointcut("execution(public * com.jtcoding.audiolog.dao..*.delete*(..))")
+//	public void deleteLog() {
+//
+//	}
+//
+//	@Before("deleteLog()")
+//	public void doBefore(JoinPoint joinPoint) throws Exception {
+//        String methodName = joinPoint.getSignature().getName();
+//        log.info(methodName);
+//        Class declaringType = joinPoint.getSignature().getDeclaringType();
+//
+//        Object[] args = joinPoint.getArgs();
+//        Method[] methods = declaringType.getMethods();
+//        Method method = Arrays.stream(methods)
+//                .filter(m -> Objects.equals(m.getName(), methodName))
+//                .filter(m -> Objects.equals(m.getParameterTypes().length, args.length))
+//                .findFirst()
+//                .orElse(null);
+//        if (method != null) {
+//            Object obj = null;
+//            switch (declaringType.getSimpleName()) {
+//                case "CompanyDao":
+//                    int companyNum = (int) args[0];
+//                    obj = companyService.getCompanyByNum(companyNum);
+//                    break;
+//                case "PlanDao":
+//                    int planNum = (int) args[0];
+//                    obj = planService.getPlanByNum(planNum);
+//                    break;
+//            }
+//            if (obj != null) {
+//                this.addAudioLog(obj);
+//            }
+//        }
+//	}
+//
+//	private void addAudioLog(Object obj) {
+//        String jsonString = JacksonSerializer.toJSONString(obj);
+//        AudioLog audioLog = AudioLog.builder().logData(jsonString).createDatetime(LocalDate.now()).build();
+//        audioLogDao.addAudioLog(audioLog);
+//    }
+//
+//	@AfterReturning(returning = "result", pointcut = "log()")
+//	public void doAfterReturning(Object result) throws Exception {
+//		System.out.println("after returning");
+//	}
+//
+//	@Around("log()")
+//	public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+//		long startTime = System.currentTimeMillis();
+//		Object result = null;
+//		try {
+//			result = joinPoint.proceed();
+//			long endTime = System.currentTimeMillis();
+//			String tragetClassName = joinPoint.getSignature().getDeclaringTypeName();
+//			String methodName = joinPoint.getSignature().getName();
+//			log.info("CLASS_METHOD [{}.{}] cost : {} ms.", tragetClassName, methodName, endTime - startTime);
+//		} catch (Throwable e) {
+//			long endTime = System.currentTimeMillis();
+//			log.info("{} Use time : {} ms with exception : ", joinPoint, endTime - startTime, e.getMessage());
+//			throw e;
+//		}
+//		return result;
+//	}
+//
+//	@AfterThrowing(throwing = "ex", pointcut = "execution(public * com.jtcoding.audiolog.controller..*.*(..))")
+//	public void doAfterThrowing(Exception ex) {
+//		log.error("[EXCEPTION] : {}", ex);
+//	}
 }

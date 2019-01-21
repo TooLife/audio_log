@@ -1,6 +1,8 @@
 package com.jtcoding.audiolog.service.impl;
 
+import com.jtcoding.audiolog.annotation.AudioAction;
 import com.jtcoding.audiolog.dao.CompanyDao;
+import com.jtcoding.audiolog.enums.Action;
 import com.jtcoding.audiolog.model.Company;
 import com.jtcoding.audiolog.service.CompanyService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,7 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDao.deleteCompany(companyNum);
     }
 
+    //@AudioAction(action = Action.GET)
     @Override
     public Company getCompanyByNum(int companyNum) {
         return companyDao.getCompanyByNum(companyNum);
