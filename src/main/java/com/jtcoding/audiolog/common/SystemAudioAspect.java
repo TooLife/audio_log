@@ -43,11 +43,7 @@ public class SystemAudioAspect {
     @Autowired
     private AudioLogDao audioLogDao;
 
-    @Pointcut(value = "execution(public * com.jtcoding.audiolog.dao..*.add*(..)) || execution(public * com.jtcoding.audiolog.dao..*.update*(..)) || execution(public * com.jtcoding.audiolog.dao..*.delete*(..))")
-    public void audio() {
-    }
-
-    @Before(value = "audio()")
+    @Before(value = "execution(public * com.jtcoding.audiolog.dao..*.delete*(..))")
     public void doBefore(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         Class declaringType = joinPoint.getSignature().getDeclaringType();
@@ -68,12 +64,12 @@ public class SystemAudioAspect {
                     break;
             }
             if (obj != null) {
-                this.addAudioLog(obj);
+                this.addAudioLog(obj, "DELETE");
             }
         }
     }
 
-    @After(value = "audio()")
+    @After(value = "execution(public * com.jtcoding.audiolog.dao..*.add*(..))")
     public void doAfter(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         Class declaringType = joinPoint.getSignature().getDeclaringType();
@@ -86,7 +82,7 @@ public class SystemAudioAspect {
         }
     }
 
-    @Around(value = "audio()")
+    @Around(value = "execution(public * com.jtcoding.audiolog.dao..*.update*(..))")
     public Object doAround(ProceedingJoinPoint pjp) {
         String methodName = pjp.getSignature().getName();
         Class declaringType = pjp.getSignature().getDeclaringType();
@@ -100,9 +96,13 @@ public class SystemAudioAspect {
         return null;
     }
 
-    private void addAudioLog(Object obj) {
+    private void addAudioLog(Object obj, String type) {
         String jsonString = JacksonSerializer.toJSONString(obj);
-        AudioLog audioLog = AudioLog.builder().logData(jsonString).createDatetime(LocalDate.now()).build();
+        AudioLog audioLog = AudioLog.builder()
+                .logData(jsonString)
+                .createDatetime(LocalDate.now())
+                .type(type)
+                .build();
         audioLogDao.addAudioLog(audioLog);
     }
 
