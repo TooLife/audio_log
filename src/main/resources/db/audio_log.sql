@@ -18,7 +18,7 @@ CREATE TABLE `plan` (
 
 
 CREATE TABLE `sys_audio_log` (
-  `log_num` int(11) NOT NULL AUTO_INCREMENT,
+  `log_id` varchar (100) DEFAULT NULL,
   `log_data` varchar(255) DEFAULT NULL,
   `create_dt` date DEFAULT NULL,
   `type` varchar(100) DEFAULT NULL,

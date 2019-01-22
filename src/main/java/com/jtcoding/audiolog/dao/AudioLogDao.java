@@ -14,8 +14,8 @@ public interface AudioLogDao {
 
     public static final String DELETE = "DELETE";
     public static final String ADD = "ADD";
-    public static final String UPDATE_NEW = "UPDATE-NEW-";
-    public static final String UPDATE_ORIGINAL = "UPDATE-ORIGINAL-";
+    public static final String UPDATE_NEW = "UPDATE-NEW";
+    public static final String UPDATE_ORIGINAL = "UPDATE-ORIGINAL";
 
     int addAudioLog(AudioLog audioLog);
 }

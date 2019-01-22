@@ -16,10 +16,10 @@ public interface PlanDao {
     @AudioAction(action = Action.ADD)
     int addPlan(Plan plan);
 
-    @AudioAction(action = Action.UPDATE)
+    @AudioAction(action = Action.UPDATE, targetTable = "plan")
     int updatePlan(Plan plan);
 
-    @AudioAction(action = Action.DELETE)
+    @AudioAction(action = Action.DELETE, targetTable = "plan")
     int deletePlan(int planNum);
 
     Plan getPlanByNum(int planNum);

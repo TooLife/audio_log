@@ -4,9 +4,9 @@
 
     <insert id="addAudioLog" parameterType="com.jtcoding.audiolog.model.AudioLog">
         INSERT INTO sys_audio_log(
-            log_data, create_dt, type
+            log_id, log_data, create_dt, type
         ) VALUES (
-            #{logData}, #{createDatetime}, #{type}
+           #{logID}, #{logData}, #{createDatetime}, #{type}
         )
     </insert>
 </mapper>

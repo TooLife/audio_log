@@ -3,6 +3,7 @@ package com.jtcoding.audiolog.model;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author jason.tang
@@ -16,8 +17,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AudioLog {
-    private Integer logNum;
+    private String logID;
     private String logData;
     private String type;
-    private LocalDate createDatetime;
+    private LocalDateTime createDatetime;
 }

@@ -18,9 +18,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author jason.tang
@@ -33,18 +34,20 @@ import java.util.Objects;
 @Component
 public class SystemAudioAspect {
 
-    @Lazy
     @Autowired
     private CompanyService companyService;
 
     @Autowired
     private PlanService planService;
 
-    @Lazy
     @Autowired
     private AudioLogDao audioLogDao;
 
-    @Before(value = "execution(public * com.jtcoding.audiolog.dao..*.delete*())")
+    /**
+     * 拦截DELETE操作，记录被删除的数据
+     * @param joinPoint
+     */
+    @Before(value = "execution(public * com.jtcoding.audiolog.dao..*.delete*(..))")
     public void doBefore(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         AudioAction audioAction = this.getAudioActionByJoinPoint(joinPoint);
@@ -62,25 +65,36 @@ public class SystemAudioAspect {
                     break;
             }
             if (obj != null) {
-                this.addAudioLog(obj, AudioLogDao.DELETE);
+                this.addAudioLog(obj, AudioLogDao.DELETE, UUID.randomUUID().toString());
             }
         }
     }
 
+    /**
+     * 拦截ADD操作，记录新增的数据
+     * @param joinPoint
+     */
     @After(value = "execution(public * com.jtcoding.audiolog.dao..*.add*(..))")
     public void doAfter(JoinPoint joinPoint) {
         AudioAction audioAction = this.getAudioActionByJoinPoint(joinPoint);
         if (audioAction != null && audioAction.action() == Action.ADD) {
             Object obj = joinPoint.getArgs()[0];
-            this.addAudioLog(obj, AudioLogDao.ADD);
+            this.addAudioLog(obj, AudioLogDao.ADD, UUID.randomUUID().toString());
         }
     }
 
+    /**
+     * 拦截UPDATE操作，记录更新前后的数据
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     @Around(value = "execution(public * com.jtcoding.audiolog.dao..*.update*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         AudioAction audioAction = this.getAudioActionByJoinPoint(pjp);
         Object proceed = null;
         if (audioAction != null && audioAction.action() == Action.UPDATE) {
+            String uuid = UUID.randomUUID().toString();
             Object originalObj = null;
             Object arg = pjp.getArgs()[0];
             switch (audioAction.targetTable()) {
@@ -95,20 +109,20 @@ public class SystemAudioAspect {
             }
             if (originalObj != null) {
                 // 在执行原方法之前，记录旧数据
-                this.addAudioLog(originalObj, AudioLogDao.UPDATE_NEW);
+                this.addAudioLog(originalObj, AudioLogDao.UPDATE_NEW, uuid);
             }
             // 执行原方法
             proceed = pjp.proceed();
             // 在执行原方法之后，记录新数据
-            this.addAudioLog(arg, AudioLogDao.UPDATE_ORIGINAL);
+            this.addAudioLog(arg, AudioLogDao.UPDATE_ORIGINAL, uuid);
         }
         return proceed;
     }
 
-    private void addAudioLog(Object obj, String type) {
+    private void addAudioLog(Object obj, String type, String uuid) {
         String jsonString = JacksonSerializer.toJSONString(obj);
-        AudioLog audioLog = AudioLog.builder().logData(jsonString).createDatetime(LocalDate.now())
-                .type(type).build();
+        AudioLog audioLog = AudioLog.builder().logID(uuid).logData(jsonString)
+                .createDatetime(LocalDateTime.now()).type(type).build();
         audioLogDao.addAudioLog(audioLog);
     }
 
