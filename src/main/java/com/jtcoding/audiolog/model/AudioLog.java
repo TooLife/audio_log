@@ -1,8 +1,6 @@
 package com.jtcoding.audiolog.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +13,8 @@ import java.time.LocalDate;
 @Data
 @ToString
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AudioLog {
     private Integer logNum;
     private String logData;

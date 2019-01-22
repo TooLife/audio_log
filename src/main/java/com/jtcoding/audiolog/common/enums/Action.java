@@ -1,4 +1,4 @@
-package com.jtcoding.audiolog.enums;
+package com.jtcoding.audiolog.common.enums;
 
 /**
  * @author jason.tang

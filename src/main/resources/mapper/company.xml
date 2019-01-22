@@ -8,7 +8,8 @@
         <result column="comp_addr" property="companyAddress" javaType="String"/>
     </resultMap>
 
-    <insert id="addCompany">
+    <insert id="addCompany" useGeneratedKeys="true" keyProperty="companyNum"
+            parameterType="com.jtcoding.audiolog.model.Company">
         INSERT INTO company (
           comp_name, comp_addr
         ) VALUES (

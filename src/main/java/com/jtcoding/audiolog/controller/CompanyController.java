@@ -3,10 +3,7 @@ package com.jtcoding.audiolog.controller;
 import com.jtcoding.audiolog.model.Company;
 import com.jtcoding.audiolog.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author jason.tang
@@ -30,5 +27,17 @@ public class CompanyController {
     @RequestMapping(value = "/{companyNum}", method = RequestMethod.DELETE)
     public int deleteCompanyByNum(@PathVariable int companyNum) {
         return companyService.deleteCompany(companyNum);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Company addCompany(@RequestBody Company company) {
+        companyService.addCompany(company);
+        return company;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Company modifyCompany(@RequestBody Company company) {
+        int i = companyService.updateCompany(company);
+        return company;
     }
 }

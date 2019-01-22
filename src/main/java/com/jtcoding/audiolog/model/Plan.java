@@ -1,8 +1,6 @@
 package com.jtcoding.audiolog.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @author jason.tang
@@ -12,6 +10,8 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Plan  {
     private Integer planNum;
     private String planName;

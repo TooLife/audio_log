@@ -1,7 +1,7 @@
 package com.jtcoding.audiolog.dao;
 
 import com.jtcoding.audiolog.annotation.AudioAction;
-import com.jtcoding.audiolog.enums.Action;
+import com.jtcoding.audiolog.common.enums.Action;
 import com.jtcoding.audiolog.model.Plan;
 import org.apache.ibatis.annotations.Mapper;
 
